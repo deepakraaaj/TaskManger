@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Tasks</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Download Tasks as PDF</h1>
+        <p>Click the button below to download your tasks as a PDF file.</p>
+        <form action="{{ url_for('download_tasks') }}" method="POST">
+            <button type="submit">Download PDF</button>
+        </form>
+        <div class="action-links">
+            <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

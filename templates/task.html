@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Tasks</h1>
+        <ul>
+            {% for task in tasks %}
+            <li>{{ task.title }} - {{ task.description }} (Due: {{ task.due_date.strftime('%Y-%m-%d') }})</li>
+            {% endfor %}
+        </ul>
+        <div class="action-links">
+            <a href="{{ url_for('dashboard') }}">Back to Dashboard</a>
+        </div>
+    </div>
+</body>
+</html>

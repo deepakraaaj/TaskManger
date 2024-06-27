@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Dashboard</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Optional Bootstrap theme -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap-theme.min.css" rel="stylesheet">
+    <style>
+        .task-card {
+            margin-bottom: 20px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+        .task-card .card-header {
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
+            padding: 10px;
+        }
+        .task-card .card-body {
+            padding: 15px;
+        }
+        .task-card .card-body p {
+            margin-bottom: 5px;
+        }
+        .task-card .card-footer {
+            text-align: right;
+            background-color: #f8f9fa;
+            padding: 10px;
+        }
+        .create-task-button {
+            text-align: center;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+        .download-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        .flash-message {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Task Manager</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+        <h1 class="text-center mb-4">Dashboard </h1>
+        <h1 class="text-center mb-4">Welcome! {{ username }}</h1>
+        <!-- Create Task Button -->
+        <div class="create-task-button">
+            <a href="{{ url_for('create_task', username=username) }}" class="btn btn-primary">Create Task</a>
+        </div>
+
+        <div class="row">
+            {% for task in tasks %}
+            <div class="col-md-6">
+                <div class="card task-card">
+                    <div class="card-header">
+                        {{ task.title }}
+                    </div>
+                    <div class="card-body">
+                        <p>{{ task.description }}</p>
+                        <p>Due Date: {{ task.due_date }}</p>
+                    </div>
+                    <div class="card-footer">
+                        <a href="{{ url_for('update_task', task_id=task.id) }}" class="btn btn-sm btn-primary">Update</a>
+                        <form action="{{ url_for('delete_task', task_id=task.id) }}" method="POST" style="display: inline;">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Download Tasks Button -->
+        <a href="{{ url_for('download_pdf', username=username) }}" class="btn btn-success download-button">Download Tasks</a>
+    </div>
+
+    <!-- Flash Messages -->
+    <div class="container mt-4">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+        <div class="alert alert-info flash-message">
+            <ul class="mb-0">
+                {% for category, message in messages %}
+                <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+        {% endwith %}
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
